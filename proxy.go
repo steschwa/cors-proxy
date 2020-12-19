@@ -42,6 +42,11 @@ func getPort(fallback string) string {
 	return port
 }
 
+func setCORSHeaders(c *fiber.Ctx) {
+	c.Response().Header.Set("Access-Control-Allow-Origin", "*")
+	c.Response().Header.Set("Access-Control-Allow-Headers", "*")
+}
+
 func main() {
 	app := fiber.New()
 
@@ -53,8 +58,14 @@ func main() {
 		}
 
 		proxiedResponse, mime := loadUrl(url)
+		setCORSHeaders(c)
 		c.Response().Header.Set("Content-Type", mime)
 		return c.Send(proxiedResponse.Bytes())
+	})
+
+	app.Options("/", func(c *fiber.Ctx) error {
+		setCORSHeaders(c)
+		return c.SendString("Allowed: *")
 	})
 
 	port := getPort("5000")
