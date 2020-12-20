@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-var ENV_PORT string = "GOPROXY_PORT"
+var ENV_PORT string = "CORSPROXY_PORT"
 
 func loadUrl(url string) (*bytes.Buffer, string) {
 	res, err := http.Get(url)

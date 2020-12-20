@@ -1,7 +1,7 @@
-FROM golang:latest
+FROM golang:alpine
 
 ENV GO111MODULE=on
-ENV GOPROXY_PORT=5000
+ENV CORSPROXY_PORT=5000
 
 WORKDIR /app
 ADD . .
