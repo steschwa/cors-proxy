@@ -13,11 +13,10 @@ import (
 var ENV_PORT string = "CORSPROXY_PORT"
 
 type Config struct {
-	origin, headers, queryParameter string
+	headers, queryParameter string
 }
 
 var CONFIG = Config{
-	origin:         "*",
 	headers:        "*",
 	queryParameter: "url",
 }
@@ -53,8 +52,9 @@ func getPort(fallback string) string {
 }
 
 func setCORSHeaders(c *fiber.Ctx) {
-	c.Response().Header.Set("Access-Control-Allow-Origin", CONFIG.origin)
-	c.Response().Header.Set("Access-Control-Allow-Headers", CONFIG.headers)
+	origin := c.Get("Origin")
+	c.Response().Header.Set("Access-Control-Allow-Credentials", "true")
+	c.Response().Header.Set("Access-Control-Allow-Origin", origin)
 }
 
 func main() {
@@ -75,7 +75,7 @@ func main() {
 
 	app.Options("/", func(c *fiber.Ctx) error {
 		setCORSHeaders(c)
-		return c.SendString(fmt.Sprintf("Allowed: %s", CONFIG.origin))
+		return c.SendString("Allowed")
 	})
 
 	port := getPort("5000")

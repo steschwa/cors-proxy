@@ -14,7 +14,9 @@ Simple CORS proxy written in Go
 
 `docker build --rm -f proxy.Dockerfile -t corsproxy:latest .`
 
-`docker run -e CORSPROXY_PORT=5000 -d --name corsproxy corsproxy`
+Start a container and map the proxy to _http://localhost:5005_:
+
+`docker run --rm -e CORSPROXY_PORT=5000 -p 5005:5000 --name corsproxy corsproxy`
 
 ## Usage
 
